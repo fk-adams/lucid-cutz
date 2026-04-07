@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 (free icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -15,6 +18,7 @@
             box-sizing: border-box;
         }
 
+        /* Light Mode Variables */
         :root {
             --bg-deep: #050505;
             --bg-surface: #0f0f0f;
@@ -28,6 +32,82 @@
             --shadow-glow: 0 20px 35px -10px rgba(0,0,0,0.6);
             --whatsapp-green: #25D366;
             --whatsapp-dark: #128C7E;
+            --nav-bg: rgba(5, 5, 5, 0.95);
+        }
+
+        /* Light Mode Class */
+        body.light-mode {
+            --bg-deep: #f5f5f5;
+            --bg-surface: #ffffff;
+            --bg-card: #fafafa;
+            --bg-elevated: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent-silver: #666666;
+            --accent-silver-light: #888888;
+            --border-subtle: #dddddd;
+            --shadow-glow: 0 20px 35px -10px rgba(0,0,0,0.1);
+            --nav-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-mode nav {
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        body.light-mode .hero {
+            background-color: #e8e8e8;
+        }
+
+        body.light-mode .hero-content h1 {
+            color: #1a1a1a;
+            text-shadow: none;
+        }
+
+        body.light-mode .hero-content h1 span {
+            color: #4a4a4a;
+        }
+
+        body.light-mode .hero-desc {
+            color: #333333;
+        }
+
+        body.light-mode .btn-primary {
+            background: #333333;
+            color: #ffffff;
+            border-color: #333333;
+        }
+
+        body.light-mode .btn-primary:hover {
+            background: #1a1a1a;
+        }
+
+        body.light-mode .btn-secondary {
+            color: #1a1a1a;
+            border-color: #666666;
+        }
+
+        body.light-mode .btn-secondary:hover {
+            background: rgba(0,0,0,0.05);
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        body.light-mode .service-card {
+            border-color: #dddddd;
+        }
+
+        body.light-mode .service-card:hover {
+            border-color: #666666;
+        }
+
+        body.light-mode .whatsapp-cta {
+            border-color: #dddddd;
+        }
+
+        body.light-mode footer {
+            background: #e8e8e8;
+            border-top: 1px solid #dddddd;
         }
 
         html {
@@ -40,6 +120,7 @@
             color: var(--text-primary);
             line-height: 1.5;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         h1, h2, h3, .brand-logo, .section-title, .service-name, .stat h3, .footer-brand {
@@ -48,12 +129,79 @@
             letter-spacing: 0.5px;
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: 2px solid var(--accent-silver);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--accent-silver);
+            color: var(--bg-deep);
+        }
+
+        /* PDF Download Button */
+        .pdf-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--accent-silver);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        .pdf-download-btn:hover {
+            background: var(--accent-silver);
+            color: var(--bg-deep);
+            transform: translateY(-2px);
+        }
+
+        /* Map Container */
+        .map-container {
+            margin-top: 1.5rem;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            height: 250px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
         /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(5, 5, 5, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
             z-index: 1000;
@@ -73,12 +221,18 @@
         .brand-logo {
             font-size: 1.7rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, #a0a0a0);
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-silver));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-decoration: none;
             letter-spacing: 1px;
+        }
+
+        body.light-mode .brand-logo {
+            background: linear-gradient(135deg, #1a1a1a, #666666);
+            -webkit-background-clip: text;
+            background-clip: text;
         }
 
         .nav-links {
@@ -137,15 +291,20 @@
             border-color: var(--accent-silver);
         }
 
-        /* HERO SECTION — fully responsive */
+        body.light-mode .mobile-menu-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* HERO SECTION */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            background-color: #000000;
+            background-color: var(--bg-deep);
             position: relative;
             overflow: hidden;
             padding: 6rem 5% 4rem;
+            transition: background-color 0.3s ease;
         }
 
         .hero-grid {
@@ -178,8 +337,12 @@
             line-height: 1.05;
             margin-bottom: 1rem;
             font-weight: 800;
-            color: #ffffff;
+            color: var(--text-primary);
             text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        body.light-mode .hero-content h1 {
+            text-shadow: none;
         }
 
         .hero-content h1 span {
@@ -189,7 +352,7 @@
 
         .hero-desc {
             font-size: 0.95rem;
-            color: #cccccc;
+            color: var(--text-secondary);
             margin: 1.2rem 0 1.8rem;
             max-width: 90%;
             line-height: 1.6;
@@ -226,9 +389,13 @@
         }
 
         .btn-primary:hover {
-            background: #ffffff;
+            background: var(--text-primary);
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+        }
+
+        body.light-mode .btn-primary:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .btn-secondary {
@@ -239,8 +406,8 @@
 
         .btn-secondary:hover {
             background: rgba(255,255,255,0.05);
-            border-color: #ffffff;
-            color: #ffffff;
+            border-color: var(--text-primary);
+            color: var(--text-primary);
         }
 
         .hero-image {
@@ -310,7 +477,7 @@
             font-size: 1.1rem;
             border-left: 3px solid var(--accent-silver);
             padding-left: 1.2rem;
-            color: #e0e0e0;
+            color: var(--text-primary);
             margin-top: 1.5rem;
         }
 
@@ -380,7 +547,7 @@
 
         .service-card {
             background: var(--bg-card);
-            border: 1px solid #242424;
+            border: 1px solid var(--border-subtle);
             padding: 1.5rem;
             transition: 0.25s;
         }
@@ -393,7 +560,7 @@
         .service-header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dashed #2c2c2c;
+            border-bottom: 1px dashed var(--border-subtle);
             padding-bottom: 0.5rem;
             margin-bottom: 0.8rem;
             flex-wrap: wrap;
@@ -408,6 +575,15 @@
         .service-price {
             color: var(--accent-silver);
             font-weight: 600;
+        }
+
+        .service-desc {
+            color: var(--text-secondary);
+        }
+
+        .pdf-download-container {
+            text-align: right;
+            margin-top: 1rem;
         }
 
         /* contact section */
@@ -450,10 +626,10 @@
             gap: 0.4rem 1rem;
         }
 
-        /* WhatsApp Button - Silver with green on hover */
+        /* WhatsApp Button */
         .whatsapp-cta {
             background: var(--bg-elevated);
-            border: 1px solid #2a2a2a;
+            border: 1px solid var(--border-subtle);
             padding: 2rem;
             text-align: center;
             transition: 0.2s;
@@ -488,17 +664,25 @@
             box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
         }
 
-        /* Footer Social Icons - silver style, green on hover for whatsapp, brand colors for others */
+        body.light-mode .whatsapp-btn {
+            color: #ffffff;
+        }
+
+        body.light-mode .whatsapp-btn:hover {
+            color: #000;
+        }
+
+        /* Footer */
         footer {
-            background: #030303;
-            border-top: 1px solid #1a1a1a;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
             padding: 2.5rem 5% 2rem;
             text-align: center;
         }
 
         .footer-brand {
             font-size: 1.8rem;
-            background: linear-gradient(135deg, #ddd, #6e6e6e);
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-silver));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -534,7 +718,6 @@
             font-size: 1.2rem;
         }
 
-        /* Individual hover effects: instagram gradient-ish, tiktok, whatsapp green */
         .social-icon.ig:hover {
             background: #d62976;
             border-color: #d62976;
@@ -579,7 +762,7 @@
             transform: translateY(0);
         }
 
-        /* ========== FULLY MOBILE RESPONSIVE ========== */
+        /* ========== MOBILE RESPONSIVE ========== */
         @media (max-width: 900px) {
             nav {
                 padding: 0.7rem 5%;
@@ -606,11 +789,11 @@
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-                background: #050505;
+                background: var(--bg-deep);
                 padding: 1.5rem 0;
                 gap: 1.2rem;
                 margin-top: 1rem;
-                border-top: 1px solid #2a2a2a;
+                border-top: 1px solid var(--border-subtle);
             }
             
             .nav-links.show-mobile li {
@@ -659,6 +842,14 @@
             
             .whatsapp-cta {
                 padding: 1.5rem;
+            }
+
+            .theme-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
             }
         }
 
@@ -728,6 +919,10 @@
             
             .contact-detail i {
                 min-width: auto;
+            }
+
+            .map-container {
+                height: 200px;
             }
         }
 
@@ -800,19 +995,13 @@
             .contact-detail strong {
                 font-size: 0.75rem;
             }
-        }
 
-        @media (max-width: 360px) {
-            .hero-content h1 {
-                font-size: 1.6rem;
-            }
-            
-            .brand-logo {
-                font-size: 1.1rem;
-            }
-            
-            .service-name {
-                font-size: 1.1rem;
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
             }
         }
 
@@ -822,7 +1011,8 @@
             .btn,
             .social-icon,
             .whatsapp-btn,
-            .call-link {
+            .call-link,
+            .pdf-download-btn {
                 min-height: 44px;
                 display: inline-flex;
                 align-items: center;
@@ -834,29 +1024,18 @@
             }
         }
 
-        /* Landscape mode optimization */
-        @media (max-width: 900px) and (orientation: landscape) {
-            .hero {
-                min-height: auto;
-                padding: 5rem 5% 2rem;
-            }
-            
-            .hero-grid {
-                gap: 1.5rem;
-            }
-            
-            .hero-image, .philosophy-img {
-                min-height: 200px;
-            }
-        }
-
-        /* Offset for fixed header when using anchor links */
+        /* Offset for fixed header */
         section[id] {
             scroll-margin-top: 80px;
         }
     </style>
 </head>
 <body>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <i class="fas fa-moon" id="themeIcon"></i>
+</button>
 
 <nav>
     <div class="nav-container">
@@ -871,11 +1050,11 @@
     </div>
 </nav>
 
-<!-- HERO SECTION - Split layout with grayscale image -->
+<!-- HERO SECTION -->
 <section class="hero" id="home">
     <div class="hero-grid">
         <div class="hero-content fade-in">
-            <span class="badge">Est. 2026 • Silver Standard</span>
+            <span class="badge" id="estYear">Est. 2026 • Silver Standard</span>
             <h1>Where precision meets <span>silhouette</span></h1>
             <p class="hero-desc">Master barbering, monochrome rituals, and the sharpest fades in Lagos. Lucid's Cutz defines modern luxury — no gold, just steel and shadow.</p>
             <div class="cta-group">
@@ -889,7 +1068,7 @@
     </div>
 </section>
 
-<!-- PHILOSOPHY SECTION with image -->
+<!-- PHILOSOPHY SECTION -->
 <section class="philosophy fade-in" id="philosophy">
     <div class="philosophy-grid">
         <div class="philosophy-text">
@@ -964,10 +1143,15 @@
                 <p class="service-desc">Scalp treatment, premium shampoo, blowout & styling.</p>
             </div>
         </div>
+        <div class="pdf-download-container">
+            <button class="pdf-download-btn" id="downloadPdfBtn">
+                <i class="fas fa-download"></i> Download Price List (PDF)
+            </button>
+        </div>
     </div>
 </section>
 
-<!-- CONTACT SECTION: clickable phone number + silver WA button -->
+<!-- CONTACT SECTION -->
 <section id="contact" class="fade-in">
     <h2 class="section-title">Book the chair</h2>
     <div class="contact-content">
@@ -1000,6 +1184,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Google Maps Integration -->
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.698394336837!2d3.421987314769533!3d6.432024995345464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5386f8b2a9b%3A0x8f9e6c1f5e5b5b5b!2sVictoria%20Island%2C%20Lagos!5e0!3m2!1sen!2sng!4v1625000000000!5m2!1sen!2sng"
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
         </div>
         <div class="whatsapp-cta">
             <h3><i class="fab fa-whatsapp"></i> Instant booking</h3>
@@ -1011,7 +1205,7 @@
     </div>
 </section>
 
-<!-- FOOTER with social icons (Instagram, TikTok, WhatsApp) + clickable number -->
+<!-- FOOTER -->
 <footer>
     <div class="footer-brand">Lucid's Cutz</div>
     <div class="social-links">
@@ -1019,11 +1213,152 @@
         <a href="https://tiktok.com/@lucids_cutz" target="_blank" class="social-icon tiktok"><i class="fab fa-tiktok"></i> TikTok</a>
         <a href="https://wa.me/2349124777785?text=Hey%20Lucid's%20Cutz!%20Found%20you%20online" target="_blank" class="social-icon ws"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </div>
-    <p style="margin: 0.5rem 0; font-size: 0.8rem;"><i class="fas fa-phone-alt"></i> <a href="tel:+2349124777785" class="call-link" style="color: var(--accent-silver);">+234 912 477 7785</a> — call or message</p>
-    <p style="margin-top: 1rem; font-size: 0.7rem;">© 2026 — precision in black & silver. All cuts sharp.</p>
+    <p style="margin: 0.5rem 0; font-size: 0.8rem;"><i class="fas fa-phone-alt"></i> <a href="tel:+2349124777785" class="call-link">+234 912 477 7785</a> — call or message</p>
+    <p style="margin-top: 1rem; font-size: 0.7rem;">© <span id="currentYear">2026</span> — precision in black & silver. All cuts sharp.</p>
 </footer>
 
 <script>
+    // Auto-update year
+    (function() {
+        const currentYear = new Date().getFullYear();
+        
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = currentYear;
+        }
+        
+        const estYearSpan = document.getElementById('estYear');
+        if (estYearSpan) {
+            estYearSpan.textContent = `Est. ${currentYear} • Silver Standard`;
+        }
+    })();
+
+    // Theme Toggle
+    (function() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    })();
+
+    // PDF Generation
+    (function() {
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        
+        downloadBtn.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Set document properties
+            doc.setProperties({
+                title: 'Lucid\'s Cutz - Price List',
+                subject: 'Barbering Services',
+                author: 'Lucid\'s Cutz',
+                keywords: 'barber, haircut, price list',
+                creator: 'Lucid\'s Cutz'
+            });
+            
+            // Header
+            doc.setFontSize(24);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont('times', 'bold');
+            doc.text('LUCID\'S CUTZ', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Precision & Silver Standard', 105, 30, { align: 'center' });
+            
+            doc.setFontSize(10);
+            doc.text('14A Silver Street, Victoria Island, Lagos', 105, 38, { align: 'center' });
+            doc.text('+234 912 477 7785 | @lucids_cutz', 105, 45, { align: 'center' });
+            
+            // Divider line
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 52, 190, 52);
+            
+            // Services Table
+            const services = [
+                ['SERVICE', 'PRICE', 'DESCRIPTION'],
+                ['Lucid Signature Fade', 'N8,500', 'Precision skin fade, razor lineup + steamed towel ritual'],
+                ['Beard Architecture', 'N6,000', 'Hot foam sculpting, straight razor edge, beard oil & balm'],
+                ['The Executive Ritual', 'N13,500', 'Haircut + full beard sculpt + hot towel therapy + scalp massage'],
+                ['Razor Clean Shave', 'N5,500', 'Traditional straight razor shave (3 hot towels + aftershave)'],
+                ['Kids Cut (12 & under)', 'N6,000', 'Sharp yet gentle — young gentlemen\'s precision cut'],
+                ['Silver Wash & Finish', 'N4,000', 'Scalp treatment, premium shampoo, blowout & styling']
+            ];
+            
+            doc.autoTable({
+                startY: 58,
+                head: [services[0]],
+                body: services.slice(1),
+                theme: 'grid',
+                styles: {
+                    fontSize: 9,
+                    cellPadding: 4,
+                    lineColor: [180, 180, 180],
+                    lineWidth: 0.1
+                },
+                headStyles: {
+                    fillColor: [30, 30, 30],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold',
+                    halign: 'center'
+                },
+                columnStyles: {
+                    0: { cellWidth: 55, fontStyle: 'bold' },
+                    1: { cellWidth: 30, halign: 'center' },
+                    2: { cellWidth: 85 }
+                },
+                alternateRowStyles: {
+                    fillColor: [245, 245, 245]
+                },
+                margin: { left: 15, right: 15 }
+            });
+            
+            // Footer
+            const finalY = doc.lastAutoTable.finalY + 15;
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.setFont('helvetica', 'italic');
+            doc.text('"Sharp lines, quiet confidence."', 105, finalY, { align: 'center' });
+            
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Hours: Mon-Fri 10am-8pm | Sat 11am-7pm | Sun 12pm-5pm', 105, finalY + 8, { align: 'center' });
+            
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            const year = new Date().getFullYear();
+            doc.text(`© ${year} Lucid's Cutz. All cuts sharp.`, 105, finalY + 18, { align: 'center' });
+            
+            // Save the PDF
+            doc.save('Lucids_Cutz_Price_List.pdf');
+        });
+    })();
+
     // Intersection Observer for fade animations
     const fadeElements = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {
@@ -1035,7 +1370,7 @@
     }, { threshold: 0.2, rootMargin: "0px 0px -30px 0px" });
     fadeElements.forEach(el => observer.observe(el));
 
-    // Mobile menu toggle with responsive class
+    // Mobile menu toggle
     const toggleBtn = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navLinks');
     if (toggleBtn && navMenu) {
@@ -1043,18 +1378,16 @@
             navMenu.classList.toggle('show-mobile');
         });
         
-        // Close menu when a link is clicked (mobile)
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', (e) => {
                 navMenu.classList.remove('show-mobile');
                 
-                // Smooth scroll for anchor links
                 const href = link.getAttribute('href');
                 if (href && href !== "#" && href.startsWith('#')) {
                     e.preventDefault();
                     const target = document.querySelector(href);
                     if (target) {
-                        const offsetTop = target.offsetTop - 80; // Account for fixed header
+                        const offsetTop = target.offsetTop - 80;
                         window.scrollTo({
                             top: offsetTop,
                             behavior: 'smooth'
@@ -1073,7 +1406,7 @@
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
-                    const offsetTop = target.offsetTop - 80; // Account for fixed header
+                    const offsetTop = target.offsetTop - 80;
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
@@ -1083,7 +1416,7 @@
         });
     });
 
-    // ensure all whatsapp links use the correct number +2349124777785
+    // WhatsApp links
     const waNumber = "2349124777785";
     document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
         let customMsg = "Hello%20Lucid's%20Cutz!%20Book%20my%20cut%20now";
