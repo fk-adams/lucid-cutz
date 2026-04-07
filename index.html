@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lucid's Cutz | Precision & Silver Standard</title>
+    <!-- Google Fonts: Playfair Display (elegant cursive/serif) + Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #050505;
+            --bg-surface: #0f0f0f;
+            --bg-card: #111111;
+            --bg-elevated: #1a1a1a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --accent-silver: #d4d4d4;
+            --accent-silver-light: #e8e8e8;
+            --border-subtle: #222222;
+            --shadow-glow: 0 20px 35px -10px rgba(0,0,0,0.6);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-logo, .section-title, .service-name, .stat h3, .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 1000;
+            padding: 0.9rem 5%;
+            transition: 0.2s;
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-silver);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent-silver);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+
+        /* HERO SECTION — fullscreen split layout with pexels image (black & white vibe) */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background-color: #000000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            align-items: center;
+            gap: 2rem;
+            padding: 0 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            z-index: 3;
+        }
+
+        .hero-content .badge {
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-silver);
+            margin-bottom: 1rem;
+            display: inline-block;
+            border-left: 2px solid var(--accent-silver);
+            padding-left: 12px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 9vw, 5.8rem);
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .hero-content h1 span {
+            color: var(--accent-silver);
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: #cccccc;
+            margin: 1.5rem 0 2rem;
+            max-width: 85%;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.25s;
+            font-size: 0.8rem;
+            border: 1px solid;
+            border-radius: 0;
+        }
+
+        .btn-primary {
+            background: var(--accent-silver);
+            color: #050505;
+            border-color: var(--accent-silver);
+        }
+
+        .btn-primary:hover {
+            background: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border-color: var(--accent-silver);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .hero-image {
+            position: relative;
+            height: 480px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: var(--shadow-glow);
+            background: #1a1a1a;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.9) contrast(1.1);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.02);
+        }
+
+        /* Philosophy section with image */
+        .philosophy {
+            padding: 5rem 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .philosophy-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .philosophy-text h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 2px;
+            background: var(--accent-silver);
+        }
+
+        .philosophy-text p {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .signature-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            border-left: 3px solid var(--accent-silver);
+            padding-left: 1.5rem;
+            color: #e0e0e0;
+            margin-top: 1.8rem;
+        }
+
+        .philosophy-img {
+            height: 420px;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+            background: #121212;
+        }
+
+        .philosophy-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.85) contrast(1.05);
+            transition: 0.4s;
+        }
+
+        .philosophy-img img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Stats + restyling */
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat h3 {
+            font-size: 2rem;
+            color: var(--accent-silver);
+        }
+
+        /* services section */
+        #services {
+            background: var(--bg-surface);
+            max-width: 100%;
+            padding: 5rem 5%;
+        }
+
+        .services-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title:after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-silver), transparent);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid #242424;
+            padding: 2rem;
+            transition: 0.25s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-silver);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #2c2c2c;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .service-price {
+            color: var(--accent-silver);
+            font-weight: 600;
+        }
+
+        /* contact section */
+        #contact {
+            padding: 5rem 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-detail {
+            margin-bottom: 1.8rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .contact-detail i {
+            font-size: 1.3rem;
+            color: var(--accent-silver);
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem 1rem;
+        }
+
+        .whatsapp-cta {
+            background: var(--bg-elevated);
+            border: 1px solid #2a2a2a;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: #25D366;
+            color: #000;
+            padding: 0.8rem 1.8rem;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background: #030303;
+            border-top: 1px solid #1a1a1a;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid, .philosophy-grid, .contact-content {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 6rem 0;
+            }
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            .hero-desc {
+                max-width: 100%;
+            }
+            .hero-image {
+                height: 350px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="#" class="brand-logo">Lucid's Cutz</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#philosophy">Philosophy</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Connect</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="menuToggle"><i class="fas fa-cut"></i> ☰</button>
+    </div>
+</nav>
+
+<!-- HERO SECTION - New split layout with grayscale image from Pexels (CC0 style) -->
+<section class="hero" id="home">
+    <div class="hero-grid">
+        <div class="hero-content fade-in">
+            <span class="badge">Est. 2025 • Silver Standard</span>
+            <h1>Where precision meets <span>silhouette</span></h1>
+            <p class="hero-desc">Master barbering, monochrome rituals, and the sharpest fades in Lagos. Lucid's Cutz defines modern luxury — no gold, just steel and shadow.</p>
+            <div class="cta-group">
+                <a href="https://wa.me/2349124777785?text=Hello%20Lucid's%20Cutz!%20Book%20my%20cut%20now" class="btn btn-primary" target="_blank"><i class="fab fa-whatsapp"></i> Reserve a chair</a>
+                <a href="#services" class="btn btn-secondary">Discover cuts</a>
+            </div>
+        </div>
+        <div class="hero-image fade-in">
+            <!-- High-quality barber image in grayscale theme from Pexels (free to use) -->
+            <img src="https://images.pexels.com/photos/3998414/pexels-photo-3998414.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Barber cutting hair black and white style" loading="lazy">
+        </div>
+    </div>
+</section>
+
+<!-- PHILOSOPHY SECTION with matching image (grayscale/barber tools vibe) -->
+<section class="philosophy fade-in" id="philosophy">
+    <div class="philosophy-grid">
+        <div class="philosophy-text">
+            <h2>The Lucid Code</h2>
+            <p>We believe that a cut is a conversation — between blade and skin, tradition and tomorrow. Our studio strips away the unnecessary: no flash, just focus. Every silhouette is mapped, every fade sculpted with obsessive precision.</p>
+            <p>Inspired by the raw contrast of black & white photography, we work in shades of excellence. Hot towels, cold steel, and an atmosphere that feels more like an atelier than a barbershop.</p>
+            <div class="stats">
+                <div class="stat">
+                    <h3>9+</h3>
+                    <p>Years precision</p>
+                </div>
+                <div class="stat">
+                    <h3>3.2k+</h3>
+                    <p>Lucid transformations</p>
+                </div>
+            </div>
+            <div class="signature-quote">
+                “Sharp lines, quiet confidence.”
+            </div>
+        </div>
+        <div class="philosophy-img">
+            <!-- Pexels image: classic barber tools / razor & comb in monochrome mood -->
+            <img src="https://images.pexels.com/photos/3998425/pexels-photo-3998425.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Barber tools monochrome aesthetic" loading="lazy">
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES SECTION (black / silver style) -->
+<section id="services">
+    <div class="services-container">
+        <h2 class="section-title">The Razor's Edge</h2>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">Lucid Signature Fade</span>
+                    <span class="service-price">₦8,500</span>
+                </div>
+                <p class="service-desc">Precision skin fade, razor lineup + steamed towel ritual & premium finish.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">Beard Architecture</span>
+                    <span class="service-price">₦6,000</span>
+                </div>
+                <p class="service-desc">Hot foam sculpting, straight razor edge, beard oil & balm.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">The Executive Ritual</span>
+                    <span class="service-price">₦13,500</span>
+                </div>
+                <p class="service-desc">Haircut + full beard sculpt + hot towel therapy + scalp massage.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">Razor Clean Shave</span>
+                    <span class="service-price">₦5,500</span>
+                </div>
+                <p class="service-desc">Traditional straight razor shave (3 hot towels + aftershave balm).</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">Kids Cut (12 & under)</span>
+                    <span class="service-price">₦6,000</span>
+                </div>
+                <p class="service-desc">Sharp yet gentle — young gentlemen's precision cut.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-header">
+                    <span class="service-name">Silver Wash & Finish</span>
+                    <span class="service-price">₦4,000</span>
+                </div>
+                <p class="service-desc">Scalp treatment, premium shampoo, blowout & styling.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT & WHATSAPP (updated number: +2349124777785) -->
+<section id="contact" class="fade-in">
+    <h2 class="section-title">Book the chair</h2>
+    <div class="contact-content">
+        <div class="contact-info">
+            <div class="contact-detail">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <strong>Lucid's Cutz Studio</strong>
+                    <span>14A Silver Street, Victoria Island, Lagos, Nigeria</span>
+                </div>
+            </div>
+            <div class="contact-detail">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <strong>Direct Line</strong>
+                    <span>+234 912 477 7785</span>
+                </div>
+            </div>
+            <div class="contact-detail">
+                <i class="far fa-clock"></i>
+                <div>
+                    <strong>Hours of operation</strong>
+                    <div class="hours-grid">
+                        <span>Mon - Fri:</span>
+                        <span>10:00 AM – 8:00 PM</span>
+                        <span>Saturday:</span>
+                        <span>11:00 AM – 7:00 PM</span>
+                        <span>Sunday:</span>
+                        <span>12:00 PM – 5:00 PM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="whatsapp-cta">
+            <h3><i class="fab fa-whatsapp"></i> Instant booking</h3>
+            <p>Reply within minutes. Walk-ins welcome, but WhatsApp secures your slot.</p>
+            <a href="https://wa.me/2349124777785?text=Hi%20Lucid's%20Cutz!%20I'd%20like%20to%20book%20a%20cut%20please." class="whatsapp-btn" target="_blank">
+                <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Chat & book
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.7rem;">⭐ Premium cuts • Silver service</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-brand">Lucid's Cutz</div>
+    <p>© 2025 — precision in black & silver. All cuts sharp.</p>
+    <p style="margin-top: 8px; font-size: 0.75rem;"><i class="fab fa-instagram"></i> @lucids_cutz  |  <i class="fab fa-whatsapp"></i> +2349124777785</p>
+</footer>
+
+<script>
+    // Intersection Observer for fade animations
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.2, rootMargin: "0px 0px -40px 0px" });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // mobile menu toggle
+    const toggleBtn = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navLinks');
+    if (toggleBtn && navMenu) {
+        toggleBtn.addEventListener('click', () => {
+            if (navMenu.style.display === 'flex') {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'flex';
+                navMenu.style.flexDirection = 'column';
+                navMenu.style.position = 'absolute';
+                navMenu.style.top = '70px';
+                navMenu.style.left = '0';
+                navMenu.style.width = '100%';
+                navMenu.style.backgroundColor = '#050505';
+                navMenu.style.padding = '2rem';
+                navMenu.style.gap = '1.5rem';
+                navMenu.style.borderBottom = '1px solid #2c2c2c';
+                navMenu.style.zIndex = '999';
+            }
+        });
+    }
+
+    // ensure all whatsapp links use the correct number +2349124777785
+    const waNumber = "2349124777785";
+    const defaultMsg = "Hi Lucid's Cutz! I'd like to book an appointment please.";
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+        let customMsg = "Hello%20Lucid's%20Cutz!%20Book%20my%20cut%20now";
+        if (link.innerText.includes("Chat & book")) customMsg = "Hi%20Lucid's%20Cutz!%20I'd%20like%20to%20book%20a%20cut%20please.";
+        link.href = `https://wa.me/${waNumber}?text=${customMsg}`;
+    });
+</script>
+</body>
+</html>
